@@ -20,8 +20,10 @@ public class AppUserServiceImpl implements IAppUserService {
 
 	@Autowired
 	private AppUserRepo appUserRepo;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
 	@Autowired
 	private RoleRepository roleRepository;
 	@Autowired
@@ -39,9 +41,9 @@ public class AppUserServiceImpl implements IAppUserService {
 		appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 		System.out.println("password:: " + appUser.getPassword());
 		// save or update
-		
+
 		if (appUser.getUserId() == null) {
-			
+
 			// Cart cart = new Cart();
 			Role role = new Role();
 			role.setEmail(appUser.getEmail());
@@ -74,18 +76,18 @@ public class AppUserServiceImpl implements IAppUserService {
 	@Override
 	public void activeAccount(String codeStr) {
 		Code code = codeService.findByCodeStr(codeStr);
-    	if(code != null){
-        	AppUser appUser = code.getCustomer();
-        	Role role = new Role();
-        	role.setAuthority("ROLE_USER");
-        	role.setAppUser(appUser);
-        	role.setEmail(appUser.getEmail());
-        	roleRepository.save(role);
-        	// delete role UNAUTH
-        	roleRepository.delete(roleRepository.findByAuthorityAndAppUser("ROLE_UNAUTH", appUser));
-        	// delete active code
-        	codeService.delete(code);
-    	}
+		if (code != null) {
+			AppUser appUser = code.getCustomer();
+			Role role = new Role();
+			role.setAuthority("ROLE_USER");
+			role.setAppUser(appUser);
+			role.setEmail(appUser.getEmail());
+			roleRepository.save(role);
+			// delete role UNAUTH
+			roleRepository.delete(roleRepository.findByAuthorityAndAppUser("ROLE_UNAUTH", appUser));
+			// delete active code
+			codeService.delete(code);
+		}
 	}
 
 	@Override
@@ -113,7 +115,7 @@ public class AppUserServiceImpl implements IAppUserService {
 
 	@Override
 	public AppUser findById(Long uid) {
-		//return appUserRepo.findByUserId(uid).orElse(new AppUser());
+		// return appUserRepo.findByUserId(uid).orElse(new AppUser());
 		return appUserRepo.findByUserId(uid);
 	}
 

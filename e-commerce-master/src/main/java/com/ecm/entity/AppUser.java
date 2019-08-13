@@ -72,5 +72,7 @@ public class AppUser implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<Code> codes;
     
+    private String activeAccount;
+    
 }
   
